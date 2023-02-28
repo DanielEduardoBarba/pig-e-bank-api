@@ -10,7 +10,7 @@ app.use(cors())
 const PORT = 8080
 
 app.get("/check",(req, res)=>{
-    res.send("THIS WORKS!! WOW MY DUDE :D")
+    res.send("THIS WORKS!! WOW! :D")
 })
 app.get("/transactions",getTransactions)
 
