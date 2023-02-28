@@ -1,3 +1,3 @@
 api.pigebank.click {
-    reverse_proxy localhost:80
+    reverse_proxy localhost
 }
