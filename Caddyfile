@@ -1,3 +1,0 @@
-api.pigebank.click {
-    reverse_proxy localhost:443
-}
