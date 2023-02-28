@@ -7,7 +7,7 @@ const app = express()
 app.use(express.json())
 app.use(cors())
 
-const PORT = 3008
+const PORT = 80
 
 app.get("/check",(req, res)=>{
     res.send("THIS WORKS!! WOW! :D")
