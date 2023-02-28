@@ -19,5 +19,5 @@ app.patch("/transactions",updateTransactions)
 app.get("/querytransactions",queryTransactions)
 
 app.listen(PORT, ()=>{
-    console.log(`Listening to http://<my ip>:${PORT}/....`)
+    console.log(`NOTE: make sure I am running SUDO for EC2 port 80 listening\nListening to http://<my ip>:${PORT}/....`)
 })
