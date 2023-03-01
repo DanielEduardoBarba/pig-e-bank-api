@@ -9,8 +9,8 @@ app.use(cors())
 
 const PORT = 80
 
-app.get("/check",(req, res)=>{
-    res.send("THIS WORKS!! WOW! :D")
+app.get("/",(req, res)=>{
+    res.send("THIS WORKS!! WOW! :D great job AWS")
 })
 app.get("/transactions",getTransactions)
 app.post("/transactions",postTransactions)
