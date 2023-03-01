@@ -7,7 +7,7 @@ const app = express()
 app.use(express.json())
 app.use(cors())
 
-const PORT = 80
+const PORT = 4040
 
 app.get("/",(req, res)=>{
     res.send("THIS WORKS!! WOW! :D great job AWS")
