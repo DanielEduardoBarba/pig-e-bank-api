@@ -1,6 +1,9 @@
 import express from "express"
 import cors from "cors"
-import {updateTransactions, getTransactions, postTransactions, queryTransactions} from "./src/utils.js"
+import {updateTransactions, getTransactions} from "./src/utils.js"
+import {postTransactions, queryTransactions, deleteTransactions} from "./src/utils.js"
+import {getChores, updateChores} from "./src/utils.js"
+import {findPin} from "./src/utils.js"
 
 const app = express()
 
@@ -10,13 +13,26 @@ app.use(cors())
 const PORT = 4040
 
 app.get("/",(req, res)=>{
-    res.send("THIS WORKS!! WOW! :D great job AWS")
+    res.send("THIS is a test that the API works")
 })
-app.get("/transactions",getTransactions)
-app.post("/transactions",postTransactions)
-app.patch("/transactions",updateTransactions)
 
-app.get("/querytransactions",queryTransactions)
+
+    app.get("/findpin/:userID/:childID", findPin)
+
+    app.get("/chores", getChores)
+    app.patch("/chores",updateChores)
+    
+    app.get("/transactions",getTransactions)
+    app.post("/transactions",postTransactions)
+    app.patch("/transactions",updateTransactions)
+    app.delete("/transactions",deleteTransactions)
+    
+    app.get("/querytransactions",queryTransactions)
+
+
+
+
+
 
 app.listen(PORT, ()=>{
     console.log(`NOTE: sudo node . to start API n EC2\nListening to http://<my ip>:${PORT}/....`)
