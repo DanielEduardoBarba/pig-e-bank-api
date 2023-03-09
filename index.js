@@ -19,10 +19,10 @@ app.get("/",(req, res)=>{
 
     app.get("/findpin/:userID/:childID", findPin)
 
-    app.get("/chores", getChores)
+    app.get("/chores/:userID/:childID", getChores)
     app.patch("/chores",updateChores)
     
-    app.get("/transactions",getTransactions)
+    app.get("/transactions/:userID/:childID/:account",getTransactions)
     app.post("/transactions",postTransactions)
     app.patch("/transactions",updateTransactions)
     app.delete("/transactions",deleteTransactions)

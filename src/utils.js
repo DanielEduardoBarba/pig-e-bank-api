@@ -19,13 +19,13 @@ export function findPin(req, res) {
 export function getChores(req, res) {
     //console.log("INSIDE FUNCTIONS")
     const db = mysql.createConnection(service_account)
-    db.query(`SELECT * FROM chores`, (error, results) => {
+    db.query(`SELECT * FROM chores WHERE userID="${req.params.userID}" && childID="${req.params.childID}"`, (error, results) => {
         if (error) {
-            // console.log(error)
+            console.log(error)
             res.send(error)
             return
         }
-        // console.log(results)
+        console.log(results)
         res.send(results)
     })
 }
@@ -67,7 +67,7 @@ export function updateChores(req, res) {
 export function getTransactions(req, res) {
     //console.log("INSIDE FUNCTIONS")
     const db = mysql.createConnection(service_account)
-    db.query(`SELECT * FROM transactions`, (error, results) => {
+    db.query(`SELECT * FROM transactions WHERE userID="${req.params.userID}" && childID="${req.params.childID}" && account="${req.params.account}" ORDER BY ABS(transID) ASC;`, (error, results) => {
         if (error) {
            // console.log(error)
             res.send(error)
@@ -150,7 +150,7 @@ export function postTransactions(req, res) {
     export function deleteTransactions(req, res) {
         //console.log("INSIDE FUNCTIONS")
         const db = mysql.createConnection(service_account)
-        db.query(`DELETE FROM transactions SET WHERE transID=${req.body.transID}`, (error, results) => {
+        db.query(`DELETE FROM transactions WHERE transID=${req.body.transID}`, (error, results) => {
             if (error) {
                // console.log(error)
                 res.send(error)
