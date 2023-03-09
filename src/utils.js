@@ -84,19 +84,19 @@ export function getTransactions(req, res) {
 
 // }
 
-export function queryTransactions(req, res) {
-    //console.log("INSIDE FUNCTIONS")
-    const db = mysql.createConnection(service_account)
-    db.query(`SELECT * FROM transactions WHERE ${req.body.where}`, (error, results) => {
-        if (error) {
-           // console.log(error)
-            res.send(error)
-            return
-        }
-       // console.log(results)
-        res.send(results)
-    })
-}
+// export function queryTransactions(req, res) {
+//     //console.log("INSIDE FUNCTIONS")
+//     const db = mysql.createConnection(service_account)
+//     db.query(`SELECT * FROM transactions WHERE ${req.body.where}`, (error, results) => {
+//         if (error) {
+//            // console.log(error)
+//             res.send(error)
+//             return
+//         }
+//        // console.log(results)
+//         res.send(results)
+//     })
+// }
 
 // send in body as the arguement
 // {
@@ -106,7 +106,7 @@ export function queryTransactions(req, res) {
 export function updateTransactions(req, res) {
     //console.log("INSIDE FUNCTIONS")
     const db = mysql.createConnection(service_account)
-    db.query(`UPDATE transactions SET ${req.body.set} WHERE ${req.body.where}`, (error, results) => {
+    db.query(`UPDATE transactions SET ${req.body.set} WHERE userID="${req.params.userID}" && childID="${req.params.childID} && account="${req.params.account}"`, (error, results) => {
         if (error) {
            // console.log(error)
             res.send(error)
@@ -152,11 +152,11 @@ export function postTransactions(req, res) {
         const db = mysql.createConnection(service_account)
         db.query(`DELETE FROM transactions WHERE transID=${req.body.transID}`, (error, results) => {
             if (error) {
-               // console.log(error)
+               //console.log(error)
                 res.send(error)
                 return
             }
-           // console.log(results)
+           //console.log(results)
             res.send(results)
         })
     }

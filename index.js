@@ -24,10 +24,10 @@ app.get("/",(req, res)=>{
     
     app.get("/transactions/:userID/:childID/:account",getTransactions)
     app.post("/transactions",postTransactions)
-    app.patch("/transactions",updateTransactions)
+    app.patch("/transactions/:userID/:childID/:account",updateTransactions)
     app.delete("/transactions",deleteTransactions)
     
-    app.get("/querytransactions",queryTransactions)
+    //app.get("/querytransactions",queryTransactions)
 
 
 
