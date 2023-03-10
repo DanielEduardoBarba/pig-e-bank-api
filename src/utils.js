@@ -31,36 +31,44 @@ export function getChores(req, res) {
 }
 
 export function updateChores(req, res) {
-    //console.log(req.body)
+    console.log("INCOMING: ",req.body)
+    let set=""
+   if(req.body.action=="done") set=`isDone="${Date.now().toString()}"`
+   if(req.body.action=="pending") set=`isDone="false"`
+   //console.log("TO BE SENT ",req.body, set)
+   
     const db = mysql.createConnection(service_account)
-    db.query(`UPDATE chores SET ${req.body.set} WHERE ${req.body.where}`, (error, results) => {
+    db.query(`UPDATE chores SET ${set} WHERE choreID="${req.body.choreID}";`, (error, results) => {
         if (error) {
-           // console.log(error)
+            console.log(error)
             res.send(error)
             return
         }
-        // console.log(results)
-        // res.send(results)
-       console.log("TRANSACTIONS: ", req.body)
-        db.query(`SELECT * FROM transactions WHERE userID="${req.body.userID}" && childID="${req.body.childID}"`, (error, results) => {
-            if (error) {
-               // console.log(error)
-                res.send(error)
-                return
-            }
-                const payout={}
-                payout.body = {
-                        transID:"",
-                        userID: req.body.userID, 
-                        childID: req.body.childID,
-                        title: req.body.title, 
-                        amount: req.body.amount
-                    }
-                   // console.log("payout: ",payout)
-                if(results) postTransactions(payout, res)
-                else(res.send({isPaid:"false"}))
-                })
+     
+       if( results.serverStatus==34 ){
 
+           if(req.body.action=="done"){
+
+               const payout={}
+               payout.body = {
+                       transID:"",
+                       userID: req.body.userID, 
+                       childID: req.body.childID,
+                       title: `Chore ID-${req.body.choreID}: ${req.body.title}`, 
+                       amount: req.body.amount,
+                       isPending: req.body.choreID,
+                       account:"checking"
+                   }
+
+               postTransactions(payout, res)
+           }
+           else if(req.body.action=="pending"){
+            console.log("PENDING ACTION DELETE", req.body)
+            deleteTransactions(req, res)
+           }
+           else(res.send({isPaid:"false"}))
+           
+       }
     })
 }
 
@@ -104,15 +112,21 @@ export function getTransactions(req, res) {
 //      "set": "amount=43.23"
 // }
 export function updateTransactions(req, res) {
-    //console.log("INSIDE FUNCTIONS")
+    console.log("INCOMING :" ,req.body)
+    console.log("ACTIONS :" ,req.body)
+
+    let set=""
     const db = mysql.createConnection(service_account)
-    db.query(`UPDATE transactions SET ${req.body.set} WHERE userID="${req.params.userID}" && childID="${req.params.childID} && account="${req.params.account}"`, (error, results) => {
+    if(req.body.action=="pending")set=`isPending="${Date.now().toString()}"`
+    if(req.body.action=="approve")set=`isPending="false"`
+
+    db.query(`UPDATE transactions SET ${set} WHERE userID="${req.params.userID}" && childID="${req.params.childID}" && account="${req.params.account}" && transID="${req.body.transID}"`, (error, results) => {
         if (error) {
-           // console.log(error)
+           console.log(error)
             res.send(error)
             return
         }
-       // console.log(results)
+       console.log(results)
         res.send(results)
     })
 }
@@ -126,14 +140,17 @@ export function updateTransactions(req, res) {
 // }
 
 export function postTransactions(req, res) {
-    
-    const transaction = req.body
-    if(!transaction.transID)transaction.transID= Date.now().toString()
-    if(!transaction.isPending)transaction.isPending= Date.now().toString()
-    console.log(transaction)
+    if(!req.body.account){
+        res.send({message:"Need account type"})
+        return
+    }
+   
+    if(!req.body.transID)req.body.transID= Date.now().toString()
+    if(!req.body.isPending)req.body.isPending= Date.now().toString()
+    console.log(req.body)
     const db = mysql.createConnection(service_account)
-    db.query(`insert into transactions (transID, userID, childID, isPending, title, amount) 
-    values('${transaction.transID}', '${transaction.userID}', '${transaction.childID}', '${transaction.isPending}', '${transaction.title}', '${transaction.amount}');`
+    db.query(`insert into transactions (transID, userID, childID, account, isPending, title, amount) 
+    values('${req.body.transID}', '${req.body.userID}', '${req.body.childID}', '${req.body.account}', '${req.body.isPending}', '${req.body.title}', '${req.body.amount}');`
     , (error, results) => {
         if (error) {
             // console.log(error)
@@ -148,15 +165,18 @@ export function postTransactions(req, res) {
 
 
     export function deleteTransactions(req, res) {
-        //console.log("INSIDE FUNCTIONS")
+        console.log("INSIDE DELETE FUNCTIONS")
+        let set=""
         const db = mysql.createConnection(service_account)
-        db.query(`DELETE FROM transactions WHERE transID=${req.body.transID}`, (error, results) => {
+        if(req.body.action=="pending") set=`isPending="${req.body.choreID}"`
+        else set=`transID="${req.body.transID}"`
+        db.query(`DELETE FROM transactions WHERE ${set};`, (error, results) => {
             if (error) {
-               //console.log(error)
+               console.log(error)
                 res.send(error)
                 return
             }
-           //console.log(results)
+           console.log(results)
             res.send(results)
         })
     }

@@ -1,7 +1,7 @@
 import express from "express"
 import cors from "cors"
 import {updateTransactions, getTransactions} from "./src/utils.js"
-import {postTransactions, queryTransactions, deleteTransactions} from "./src/utils.js"
+import {postTransactions, deleteTransactions} from "./src/utils.js"
 import {getChores, updateChores} from "./src/utils.js"
 import {findPin} from "./src/utils.js"
 
