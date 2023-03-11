@@ -14,7 +14,7 @@ app.use(cors())
 const PORT = 4040
 
 app.get("/",(req, res)=>{
-    res.send("THIS is a test that the API works")
+    res.send("Pre Final MVP test okay")
 })
 
 
