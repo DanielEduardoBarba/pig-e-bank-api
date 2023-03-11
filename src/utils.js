@@ -3,6 +3,23 @@ import { service_account } from "../service_account.js"
 
 const db = mysql.createPool(service_account)
 
+
+
+export function postChild(req, res) {
+    console.log(req.params)
+    //const db = mysql.createPool(service_account)
+    db.query(`INSERT INTO users ( userID, adminPin, childID, pin) 
+    values('${req.body.userID}', '${req.body.adminPin}','${req.body.childID}', '${req.body.pin}');`, (error, results) => {
+        if (error) {
+            // console.log(error)
+            res.send(error)
+            return
+        }
+        console.log(results)
+        res.send(results)
+
+    })
+}
 export function findPin(req, res) {
     console.log(req.params)
     //const db = mysql.createPool(service_account)
@@ -126,7 +143,7 @@ export function postChores(req, res) {
     //const db = mysql.createPool(service_account)
     
 //insert into chores ( choreID, userID, childID, title, isDone, amount) values ( '123456', 'DsRNmKjspkZFjfBXZdJi2HHcXCP2', 'billthekiddo', 'Take out trach', "false", 40);
-    db.query(`insert into chores (choreID, userID, childID, title, isDone, amount) 
+    db.query(`INSERT INTO chores (choreID, userID, childID, title, isDone, amount) 
     values('${req.body.choreID}', '${req.body.userID}', '${req.body.childID}', '${req.body.title}', '${req.body.isDone}', '${req.body.amount}');`
         , (error, results) => {
             if (error) {
@@ -212,7 +229,7 @@ export function postTransactions(req, res) {
     if (!req.body.isPending) req.body.isPending = Date.now().toString()
     console.log(req.body)
     //const db = mysql.createPool(service_account)
-    db.query(`insert into transactions (transID, userID, childID, account, isPending, title, amount) 
+    db.query(`INSERT INTO transactions (transID, userID, childID, account, isPending, title, amount) 
     values('${req.body.transID}', '${req.body.userID}', '${req.body.childID}', '${req.body.account}', '${req.body.isPending}', '${req.body.title}', '${req.body.amount}');`
         , (error, results) => {
             if (error) {
