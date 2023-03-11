@@ -120,19 +120,6 @@ export function deleteChores(req, res) {
     })
 }
 
-export function getTransactions(req, res) {
-    //console.log("INSIDE FUNCTIONS")
-    //const db = mysql.createPool(service_account)
-    db.query(`SELECT * FROM transactions WHERE userID="${req.params.userID}" && childID="${req.params.childID}" && account="${req.params.account}" ORDER BY ABS(transID) ASC;`, (error, results) => {
-        if (error) {
-            // console.log(error)
-            res.send(error)
-            return
-        }
-        // console.log(results)
-        res.send(results)
-    })
-}
 
 export function postChores(req, res) {
 
@@ -157,6 +144,37 @@ export function postChores(req, res) {
         })
 }
 
+
+
+export function getCredit(req, res) {
+    //console.log("INSIDE FUNCTIONS")
+    //const db = mysql.createPool(service_account)
+    console.log(req.params)
+    db.query(`SELECT * FROM credit WHERE userID="${req.params.userID}" && childID="${req.params.childID}" ORDER BY ABS(loanID) ASC;`, (error, results) => {
+        if (error) {
+            // console.log(error)
+            res.send(error)
+            return
+        }
+        console.log(results)
+        res.send(results)
+    })
+}
+
+
+export function getTransactions(req, res) {
+    //console.log("INSIDE FUNCTIONS")
+    //const db = mysql.createPool(service_account)
+    db.query(`SELECT * FROM transactions WHERE userID="${req.params.userID}" && childID="${req.params.childID}" && account="${req.params.account}" ORDER BY ABS(transID) ASC;`, (error, results) => {
+        if (error) {
+            // console.log(error)
+            res.send(error)
+            return
+        }
+        // console.log(results)
+        res.send(results)
+    })
+}
 // send in body as the arguement
 // {
 //     "where":"amount > 20 && amount < 100"
