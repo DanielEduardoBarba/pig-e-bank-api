@@ -1,9 +1,11 @@
 import mysql from "mysql2"
 import { service_account } from "../service_account.js"
 
+const db = mysql.createPool(service_account)
+
 export function findPin(req, res) {
     console.log(req.params)
-    const db = mysql.createPool(service_account)
+    //const db = mysql.createPool(service_account)
     db.query(`SELECT * FROM users WHERE userID="${req.params.userID}" && childID="${req.params.childID}" `, (error, results) => {
         if (error) {
             // console.log(error)
@@ -18,7 +20,7 @@ export function findPin(req, res) {
 
 export function findChildren(req, res) {
     console.log(req.params)
-    const db = mysql.createPool(service_account)
+    //const db = mysql.createPool(service_account)
     db.query(`SELECT * FROM users WHERE userID="${req.params.userID}"`, (error, results) => {
         if (error) {
             // console.log(error)
@@ -33,7 +35,7 @@ export function findChildren(req, res) {
 
 export function getChores(req, res) {
     //console.log("INSIDE FUNCTIONS")
-    const db = mysql.createPool(service_account)
+    //const db = mysql.createPool(service_account)
     db.query(`SELECT * FROM chores WHERE userID="${req.params.userID}" && childID="${req.params.childID}"`, (error, results) => {
         if (error) {
             console.log(error)
@@ -52,7 +54,7 @@ export function updateChores(req, res) {
     if (req.body.action == "pending") set = `isDone="false"`
     //console.log("TO BE SENT ",req.body, set)
 
-    const db = mysql.createPool(service_account)
+    //const db = mysql.createPool(service_account)
     db.query(`UPDATE chores SET ${set} WHERE choreID="${req.body.choreID}";`, (error, results) => {
         if (error) {
             console.log(error)
@@ -87,9 +89,23 @@ export function updateChores(req, res) {
     })
 }
 
+
+export function deleteChores(req, res) {
+    let set = `choreID="${req.body.choreID}"`
+    db.query(`DELETE FROM chores WHERE ${set};`, (error, results) => {
+        if (error) {
+            console.log(error)
+            res.send(error)
+            return
+        }
+        console.log(results)
+        res.send(results)
+    })
+}
+
 export function getTransactions(req, res) {
     //console.log("INSIDE FUNCTIONS")
-    const db = mysql.createPool(service_account)
+    //const db = mysql.createPool(service_account)
     db.query(`SELECT * FROM transactions WHERE userID="${req.params.userID}" && childID="${req.params.childID}" && account="${req.params.account}" ORDER BY ABS(transID) ASC;`, (error, results) => {
         if (error) {
             // console.log(error)
@@ -109,7 +125,7 @@ export function getTransactions(req, res) {
 
 // export function queryTransactions(req, res) {
 //     //console.log("INSIDE FUNCTIONS")
-//     const db = mysql.createPool(service_account)
+//     //const db = mysql.createPool(service_account)
 //     db.query(`SELECT * FROM transactions WHERE ${req.body.where}`, (error, results) => {
 //         if (error) {
 //            // console.log(error)
@@ -131,7 +147,7 @@ export function updateTransactions(req, res) {
     console.log("ACTIONS :", req.body)
 
     let set = ""
-    const db = mysql.createPool(service_account)
+    //const db = mysql.createPool(service_account)
     if (req.body.action == "pending") set = `isPending="${Date.now().toString()}"`
     if (req.body.action == "approve") set = `isPending="false"`
 
@@ -154,6 +170,28 @@ export function updateTransactions(req, res) {
 //     amount: 4332435
 // }
 
+export function postChores(req, res) {
+
+    if (!req.body.choreID) req.body.choreID = Date.now().toString()
+
+    console.log(req.body)
+
+    //const db = mysql.createPool(service_account)
+    
+//insert into chores ( choreID, userID, childID, title, isDone, amount) values ( '123456', 'DsRNmKjspkZFjfBXZdJi2HHcXCP2', 'billthekiddo', 'Take out trach', "false", 40);
+    db.query(`insert into chores (choreID, userID, childID, title, isDone, amount) 
+    values('${req.body.choreID}', '${req.body.userID}', '${req.body.childID}', '${req.body.title}', '${req.body.isDone}', '${req.body.amount}');`
+        , (error, results) => {
+            if (error) {
+                // console.log(error)
+                res.send(error)
+                return
+            }
+            // console.log(results)
+            res.send(results)
+            return
+        })
+}
 export function postTransactions(req, res) {
     if (!req.body.account) {
         res.send({ message: "Need account type" })
@@ -163,7 +201,7 @@ export function postTransactions(req, res) {
     if (!req.body.transID) req.body.transID = Date.now().toString()
     if (!req.body.isPending) req.body.isPending = Date.now().toString()
     console.log(req.body)
-    const db = mysql.createPool(service_account)
+    //const db = mysql.createPool(service_account)
     db.query(`insert into transactions (transID, userID, childID, account, isPending, title, amount) 
     values('${req.body.transID}', '${req.body.userID}', '${req.body.childID}', '${req.body.account}', '${req.body.isPending}', '${req.body.title}', '${req.body.amount}');`
         , (error, results) => {
@@ -178,11 +216,10 @@ export function postTransactions(req, res) {
         })
 }
 
-
 export function deleteTransactions(req, res) {
     console.log("INSIDE DELETE FUNCTIONS")
     let set = ""
-    const db = mysql.createPool(service_account)
+    //const db = mysql.createPool(service_account)
     if (req.body.action == "pending") set = `isPending="${req.body.choreID}"`
     else set = `transID="${req.body.transID}"`
     db.query(`DELETE FROM transactions WHERE ${set};`, (error, results) => {
