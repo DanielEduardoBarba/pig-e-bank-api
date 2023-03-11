@@ -3,7 +3,7 @@ import cors from "cors"
 import {updateTransactions, getTransactions} from "./src/utils.js"
 import {postTransactions, deleteTransactions} from "./src/utils.js"
 import {getChores, updateChores} from "./src/utils.js"
-import {findPin} from "./src/utils.js"
+import {findPin, findChildren} from "./src/utils.js"
 
 const app = express()
 
@@ -18,6 +18,8 @@ app.get("/",(req, res)=>{
 
 
     app.get("/findpin/:userID/:childID", findPin)
+    
+    app.get("/children/:userID", findChildren)
 
     app.get("/chores/:userID/:childID", getChores)
     app.patch("/chores",updateChores)
