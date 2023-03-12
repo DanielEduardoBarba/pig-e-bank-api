@@ -257,19 +257,28 @@ export function postTransactions(req, res) {
         return
     }
 
+    const year = new Date().getFullYear().toString()
+    const month = String(new Date().getMonth()+1)
+    const day = new Date().getUTCDate().toString()
+    const hour = new Date().getUTCHours().toString()
+    const minutes = new Date().getUTCMinutes().toString()
+    const seconds = new Date().getUTCSeconds().toString()
+
+    const dateOf=`${day}/${month}/${year} ${hour}:${minutes}:${seconds}`
+
     if (!req.body.transID) req.body.transID = Date.now().toString()
     if (!req.body.isPending) req.body.isPending = Date.now().toString()
+    
     console.log(req.body)
     //const db = mysql.createPool(service_account)
-    db.query(`INSERT INTO transactions (transID, userID, childID, account, isPending, title, amount) 
-    values('${req.body.transID}', '${req.body.userID}', '${req.body.childID}', '${req.body.account}', '${req.body.isPending}', '${req.body.title}', '${req.body.amount}');`
+    db.query(`INSERT INTO transactions (dateOf, transID, userID, childID, account, isPending, title, amount) values('${dateOf}', '${req.body.transID}', '${req.body.userID}', '${req.body.childID}', '${req.body.account}', '${req.body.isPending}', '${req.body.title}', '${req.body.amount}');`
         , (error, results) => {
             if (error) {
-                // console.log(error)
+                console.log(error)
                 res.send(error)
                 return
             }
-            // console.log(results)
+            console.log(results)
             res.send(results)
             return
         })

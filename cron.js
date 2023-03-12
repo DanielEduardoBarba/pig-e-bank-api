@@ -13,14 +13,16 @@ const interval = "* * * * *"
 
 const updateCharts = async ()=>{
     console.log("Updating charts....")
+  
+    
     dbMysql.query(`SELECT * FROM transactions ORDER BY ABS(transID) ASC;`, async (error, results) => {
         if (error) {
             console.log(error)
             return
         }
-        console.log(results)
+        //console.log(results)
         for(let i=0;i<results.length;i++){
-            await collection.findOneAndDelete({transID:results[i].transID},results[i])
+            await collection.findOneAndUpdate({transID:results[i].transID},{$set:results[i]})
         }
         
             await collection.insertMany(results)
@@ -36,6 +38,6 @@ if(true){
 
 cron.schedule(interval, async() => {
 
-    updateCharts()
+   updateCharts()
     console.log("update succesful!!")
 });
