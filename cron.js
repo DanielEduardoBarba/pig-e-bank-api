@@ -1,0 +1,41 @@
+import mysql from "mysql2"
+import  {MongoClient} from "mongodb"
+import { mongo_service_account, mysql_service_account } from "./service_account.js"
+import cron from "node-cron"
+
+const dbMysql = mysql.createPool(mysql_service_account)
+
+const client = new MongoClient(mongo_service_account)
+const dbMondgo = client.db("pigebank")
+const collection = dbMondgo.collection("transactions")
+
+const interval = "* * * * *"
+
+const updateCharts = async ()=>{
+    console.log("Updating charts....")
+    dbMysql.query(`SELECT * FROM transactions ORDER BY ABS(transID) ASC;`, async (error, results) => {
+        if (error) {
+            console.log(error)
+            return
+        }
+        console.log(results)
+        for(let i=0;i<results.length;i++){
+            await collection.findOneAndDelete({transID:results[i].transID},results[i])
+        }
+        
+            await collection.insertMany(results)
+        
+   
+    })
+}
+
+
+if(true){
+    updateCharts()
+}
+
+cron.schedule(interval, async() => {
+
+    updateCharts()
+    console.log("update succesful!!")
+});

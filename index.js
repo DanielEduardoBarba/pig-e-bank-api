@@ -4,7 +4,7 @@ import {updateTransactions, getTransactions} from "./src/utils.js"
 import {postTransactions, deleteTransactions} from "./src/utils.js"
 import {getChores, updateChores, postChores} from "./src/utils.js"
 import {findPin, findChildren, deleteChores} from "./src/utils.js"
-import {postChild, getCredit} from "./src/utils.js"
+import {postChild, getCredit, postCredit} from "./src/utils.js"
 
 const app = express()
 
@@ -29,6 +29,7 @@ app.get("/",(req, res)=>{
     app.delete("/chores",deleteChores)
     
     app.get("/credit/:userID/:childID",getCredit)
+    app.post("/credit/",postCredit)
 
     app.get("/transactions/:userID/:childID/:account",getTransactions)
     app.post("/transactions",postTransactions)

@@ -1,7 +1,7 @@
 import mysql from "mysql2"
-import { service_account } from "../service_account.js"
+import { mysql_service_account } from "../service_account.js"
 
-const db = mysql.createPool(service_account)
+const db = mysql.createPool(mysql_service_account)
 
 
 
@@ -151,6 +151,20 @@ export function getCredit(req, res) {
     //const db = mysql.createPool(service_account)
     console.log(req.params)
     db.query(`SELECT * FROM credit WHERE userID="${req.params.userID}" && childID="${req.params.childID}" ORDER BY ABS(loanID) ASC;`, (error, results) => {
+        if (error) {
+            // console.log(error)
+            res.send(error)
+            return
+        }
+        console.log(results)
+        res.send(results)
+    })
+}
+export function postCredit(req, res) {
+    console.log("REQ BODY POST CREDIT ", req.body)
+    //const db = mysql.createPool(service_account)
+    
+    db.query(`INSERT INTO credit(loanID, userID, childID, account, amount, APR, frequency) values('${req.body.loanID}', '${req.body.userID}','${req.body.childID}', '${req.body.account}', '${req.body.amount}', '${req.body.APR}', '${req.body.frequency}');`, (error, results) => {
         if (error) {
             // console.log(error)
             res.send(error)
