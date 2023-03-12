@@ -35,12 +35,12 @@ const updateCharts = async ()=>{
 let cycles=1
 if(true){
     updateCharts()
-    console.log(`${cycles} cycles `)
+    console.log(`${cycles} cycles`)
     cycles++
 }
 cron.schedule(interval, async() => {
 
    updateCharts()
-    console.log(`${cycles} cycles `)
+    console.log(`${cycles} cycles`)
     cycles++
 });
