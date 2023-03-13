@@ -38,6 +38,8 @@ if(true){
     console.log(`${cycles} cycles `)
     cycles++
 }
+
+
 cron.schedule(interval, async() => {
 
    updateCharts()
