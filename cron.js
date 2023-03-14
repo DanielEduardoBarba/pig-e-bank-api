@@ -20,7 +20,6 @@ const updateCharts = async ()=>{
             console.log(error)
             return
         }
-        //console.log(results)
         for(let i=0;i<results.length;i++){
             await collection.findOneAndUpdate({transID:results[i].transID},{$set:results[i]})
         }

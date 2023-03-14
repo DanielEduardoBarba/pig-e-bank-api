@@ -7,16 +7,14 @@ import {findPin, findChildren, deleteChores} from "./src/utils.js"
 import {postChild, getCredit, postCredit} from "./src/utils.js"
 
 const app = express()
-
 app.use(express.json())
 app.use(cors())
 
 const PORT = 4040
 
 app.get("/",(req, res)=>{
-    res.send("This is a message from EC2")
+    res.send("This is a message from EC2, up and running...")
 })
-
 
     app.get("/findpin/:userID/:childID", findPin)
 
@@ -36,13 +34,6 @@ app.get("/",(req, res)=>{
     app.patch("/transactions/:userID/:childID/:account",updateTransactions)
     app.delete("/transactions",deleteTransactions)
     
-    //app.get("/querytransactions",queryTransactions)
-
-
-
-
-
-
 app.listen(PORT, ()=>{
     console.log(`NOTE: sudo node . to start API n EC2\nListening to http://<my ip>:${PORT}/....`)
 })
