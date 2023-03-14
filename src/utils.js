@@ -4,7 +4,6 @@ import { mysql_service_account } from "../service_account.js"
 const db = mysql.createPool(mysql_service_account)
 
 
-
 export function postChild(req, res) {
     console.log(req.params)
     //const db = mysql.createPool(service_account)
