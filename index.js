@@ -14,6 +14,9 @@ const PORT = 4040
 
 app.get("/",(req, res)=>{
     res.send("This is a message from EC2, up and running...")
+    const time = new Date().toLocaleTimeString()
+    const date = new Date().toLocaleDateString()
+    console.log(`EC2 port ${PORT} pinged at ${date} ${time}...`)
 })
 
     app.get("/findpin/:userID/:childID", findPin)
