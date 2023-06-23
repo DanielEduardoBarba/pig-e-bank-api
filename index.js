@@ -10,7 +10,7 @@ const app = express()
 app.use(express.json())
 app.use(cors())
 
-const PORT = 4040
+const PORT = 4888
 
 app.get("/",(req, res)=>{
     res.send("This is a message from EC2, up and running...")
